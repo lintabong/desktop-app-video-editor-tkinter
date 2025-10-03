@@ -1,0 +1,13 @@
+.venv
+.vscode
+
+assets
+config
+database
+output
+
+ffmpeg.md
+test_*.mp4
+test_*.py
+
+.env

@@ -8,6 +8,8 @@ output
 
 ffmpeg.md
 test_*.mp4
+result.mp3
 test_*.py
+
 
 .env

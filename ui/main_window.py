@@ -41,7 +41,7 @@ class MainWindow(customtkinter.CTk):
         self.tabview.add('AIGC Auto Video Mixer')
         self.tabview.add('Auto Cutter Video')
         self.tabview.add('Caption AI')
-        self.tabview.add('Multi Video Joiner')
+        # self.tabview.add('Multi Video Joiner')
         self.tabview.add('ClipBot')
         self.tabview.add('Settings') 
 
@@ -49,7 +49,7 @@ class MainWindow(customtkinter.CTk):
         AutoVideoMixerTab(self.tabview.tab('AIGC Auto Video Mixer'))
         AutoCutterVideoTab(self.tabview.tab('Auto Cutter Video'))
         CaptionAiTab(self.tabview.tab('Caption AI'))
-        MultiVideoJoinerTab(self.tabview.tab('Multi Video Joiner'))
+        # MultiVideoJoinerTab(self.tabview.tab('Multi Video Joiner'))
         ClipBotTab(self.tabview.tab('ClipBot'))
         SettingsTab(self.tabview.tab('Settings'))
 

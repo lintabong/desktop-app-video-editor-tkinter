@@ -23,17 +23,10 @@ class MainWindow(customtkinter.CTk):
         database.init_config_db()
 
         # Desired window size
-        app_width = 900
-        app_height = 500
+        app_width = self.winfo_screenwidth()
+        app_height = self.winfo_screenheight()
 
-        # Get screen dimension to center the window
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        x = (screen_width // 2) - (app_width // 2)
-        y = (screen_height // 2) - (app_height // 2)
-
-        # 🪄 Set geometry and minimum size
-        self.geometry(f'{app_width}x{app_height}+{x}+{y}')
+        self.geometry(f'{app_width}x{app_height}+{0}+{0}')
         self.minsize(app_width, app_height)
 
         # Grid layout
@@ -59,3 +52,5 @@ class MainWindow(customtkinter.CTk):
         MultiVideoJoinerTab(self.tabview.tab('Multi Video Joiner'))
         ClipBotTab(self.tabview.tab('ClipBot'))
         SettingsTab(self.tabview.tab('Settings'))
+
+        self.after(0, lambda: self.state('zoomed'))

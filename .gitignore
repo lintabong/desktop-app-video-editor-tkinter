@@ -5,6 +5,7 @@ assets
 config
 database
 output
+output_mp3
 
 __pycache__
 

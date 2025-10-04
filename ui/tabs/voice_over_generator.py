@@ -4,12 +4,16 @@ import threading
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
 
+from workers import generate_voice_over
 
-class ClipBotTab:
+
+class VoiceOverGeneratorTab:
     def __init__(self, parent):
         self.frame = parent
-        self.video_source_path = None
-        self.output_folder = 'output'
+        # self.video_source_path = None
+        self.output_file = 'output.mp3'
+        self.voice = None
+        self.text = None
         self.worker = None
 
         self.init_ui()
@@ -17,37 +21,6 @@ class ClipBotTab:
     def init_ui(self):
         main_container = ctk.CTkFrame(self.frame, fg_color='transparent')
         main_container.pack(fill='both', expand=True, padx=20, pady=20)
-
-        # === Video Sumber Section ===
-        video_source_frame = ctk.CTkFrame(main_container, fg_color='transparent')
-        video_source_frame.pack(fill='x', pady=(0, 15))
-
-        video_label = ctk.CTkLabel(
-            video_source_frame,
-            text='Video Sumber:',
-            width=120,
-            anchor='w',
-            font=ctk.CTkFont(size=13)
-        )
-        video_label.pack(side='left', padx=(0, 10))
-
-        self.video_entry = ctk.CTkEntry(
-            video_source_frame,
-            placeholder_text='',
-            height=35,
-            font=ctk.CTkFont(size=13)
-        )
-        self.video_entry.pack(side='left', fill='x', expand=True, padx=(0, 10))
-
-        video_browse_btn = ctk.CTkButton(
-            video_source_frame,
-            text='...',
-            width=50,
-            height=35,
-            font=ctk.CTkFont(size=13),
-            command=self.select_video_source
-        )
-        video_browse_btn.pack(side='left')
 
         # === Output Folder Section ===
         output_frame = ctk.CTkFrame(main_container, fg_color='transparent')
@@ -67,7 +40,7 @@ class ClipBotTab:
             height=35,
             font=ctk.CTkFont(size=13)
         )
-        self.output_entry.insert(0, 'output')
+        self.output_entry.insert(0, self.output_file)
         self.output_entry.pack(side='left', fill='x', expand=True, padx=(0, 10))
 
         output_browse_btn = ctk.CTkButton(
@@ -76,7 +49,7 @@ class ClipBotTab:
             width=50,
             height=35,
             font=ctk.CTkFont(size=13),
-            command=self.select_output_folder
+            command=self.select_output_file
         )
         output_browse_btn.pack(side='left')
 
@@ -95,7 +68,7 @@ class ClipBotTab:
             font=ctk.CTkFont(size=12)
         )
         self.script_textbox.pack(fill='x', pady=(0, 15))
-        self.script_textbox.insert('1.0', 'Tempel teks VO di sini.')
+        self.script_textbox.insert('1.0', '')
 
         # === Voice Section ===
         voice_frame = ctk.CTkFrame(main_container, fg_color='transparent')
@@ -152,31 +125,18 @@ class ClipBotTab:
         self.status_textbox.insert('1.0', 'Ready to process clips...\n')
         self.status_textbox.configure(state='disabled')
 
-    def select_video_source(self):
-        file_path = filedialog.askopenfilename(
-            title='Pilih Video Sumber',
-            filetypes=[
-                ('Video files', '*.mp4 *.avi *.mov *.mkv *.flv *.wmv'),
-                ('All files', '*.*')
-            ]
+    def select_output_file(self):
+        file_path = filedialog.asksaveasfilename(
+            title='Select Output File',
+            defaultextension='.mp3',
+            filetypes=[('MP3 files', '*.mp3'), ('All files', '*.*')]
         )
         if file_path:
-            self.video_source_path = file_path
-            self.video_entry.delete(0, 'end')
-            self.video_entry.insert(0, file_path)
-
-    def select_output_folder(self):
-        folder_path = filedialog.askdirectory(title='Pilih Output Folder')
-        if folder_path:
-            self.output_folder = folder_path
+            self.output_file = file_path
             self.output_entry.delete(0, 'end')
-            self.output_entry.insert(0, folder_path)
+            self.output_entry.insert(0, file_path)
 
     def run_clipbot(self):
-        if not self.video_source_path:
-            messagebox.showwarning('Warning', 'Please select a video source first!')
-            return
-
         script = self.script_textbox.get('1.0', 'end').strip()
         if not script or script == 'Tempel teks VO di sini.\nBaris kosong = pemisah.\n1 baris = 1 video.':
             messagebox.showwarning('Warning', 'Please enter a script!')
@@ -186,9 +146,20 @@ class ClipBotTab:
         thread.start()
 
     def _run_clipbot_task(self):
-        self.log_status("Starting ClipBot processing...")
-        # Implement your ClipBot logic here
-        pass
+        self.log_status('Memulai proses generator voice over')
+        task = generate_voice_over.run(
+            text=self.script_textbox.get('1.0', 'end').strip(),
+            voice=self.voice_combo.get(),
+            output_path=self.output_file
+        )
+
+        self.log_status(f'Menggunakan suara {self.voice_combo.get()}')
+        self.log_status(f'Output file -> {self.output_file}')
+        if task:
+            self.log_status(f'Sukses')
+        else:
+            self.log_status(f'Gagal')
+
 
     def log_status(self, message):
         self.status_textbox.configure(state='normal')

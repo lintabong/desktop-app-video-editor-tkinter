@@ -6,6 +6,8 @@ config
 database
 output
 
+__pycache__
+
 ffmpeg.md
 test_*.mp4
 result.mp3

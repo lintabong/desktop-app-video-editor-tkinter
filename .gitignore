@@ -6,6 +6,7 @@ config
 database
 output
 output_mp3
+examples
 
 __pycache__
 

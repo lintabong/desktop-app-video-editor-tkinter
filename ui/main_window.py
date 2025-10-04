@@ -5,6 +5,7 @@ from ui.tabs.auto_cutter_video import AutoCutterVideoTab
 from ui.tabs.caption_ai import CaptionAiTab
 from ui.tabs.multi_video_joiner import MultiVideoJoinerTab
 from ui.tabs.voice_over_generator import VoiceOverGeneratorTab
+from ui.tabs.audio_video_combiner import AudioVideoCombinerTab
 from ui.tabs.settings import SettingsTab 
 
 from utils import database
@@ -43,6 +44,7 @@ class MainWindow(customtkinter.CTk):
         self.tabview.add('Caption AI')
         # self.tabview.add('Multi Video Joiner')
         self.tabview.add('Generator VO')
+        self.tabview.add('Audio Video Joiner')
         self.tabview.add('Settings') 
 
         # Attach contents
@@ -51,6 +53,7 @@ class MainWindow(customtkinter.CTk):
         CaptionAiTab(self.tabview.tab('Caption AI'))
         # MultiVideoJoinerTab(self.tabview.tab('Multi Video Joiner'))
         VoiceOverGeneratorTab(self.tabview.tab('Generator VO'))
+        AudioVideoCombinerTab(self.tabview.tab('Audio Video Joiner'))
         SettingsTab(self.tabview.tab('Settings'))
 
         self.after(0, lambda: self.state('zoomed'))

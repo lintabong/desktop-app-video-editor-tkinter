@@ -28,7 +28,7 @@ class VoiceOverGeneratorTab:
 
         output_label = ctk.CTkLabel(
             output_frame,
-            text='Output Folder:',
+            text='Output File:',
             width=120,
             anchor='w',
             font=ctk.CTkFont(size=13)
@@ -56,7 +56,7 @@ class VoiceOverGeneratorTab:
         # === Script VO Section ===
         script_label = ctk.CTkLabel(
             main_container,
-            text='Script VO',
+            text='Script Voice Over:',
             font=ctk.CTkFont(size=13),
             anchor='w'
         )
@@ -95,7 +95,7 @@ class VoiceOverGeneratorTab:
         # === Run Button ===
         run_btn = ctk.CTkButton(
             main_container,
-            text='🚀 Jalankan ClipBot',
+            text='🚀 Generate Voice Over',
             height=50,
             font=ctk.CTkFont(size=14, weight='bold'),
             fg_color='#7c3aed',

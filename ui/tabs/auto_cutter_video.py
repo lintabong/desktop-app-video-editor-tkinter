@@ -24,8 +24,8 @@ class AutoCutterVideoTab:
             height=50,
             font=ctk.CTkFont(size=14),
             command=command,
-            fg_color='#e74c3c' if re.search(r'✂️', text) else None,
-            hover_color='#c0392b' if re.search(r'✂️', text) else None,
+            fg_color='#7c3aed' if re.search(r'✂️', text) else None,
+            hover_color='#6d28d9' if re.search(r'✂️', text) else None,
         )
         btn_master_video.pack(side="left", fill="x", expand=True, padx=(0, 10))
 

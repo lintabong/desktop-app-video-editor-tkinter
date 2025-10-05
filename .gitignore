@@ -8,6 +8,11 @@ output
 output_mp3
 examples
 
+build
+dist
+
+faster-whisper-small
+
 __pycache__
 
 ffmpeg.md

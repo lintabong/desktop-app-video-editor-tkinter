@@ -44,3 +44,16 @@ def get_ffmpeg_folder_from_db(db_path='database/settings.db'):
         return ffmpeg_folder
     else:
         raise KeyError('ffmpeg_path_folder not found in settings table')
+
+def get_font_folder_from_db(db_path='database/settings.db'):
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('SELECT value FROM settings WHERE key = ?', ('font_path_folder',))
+    row = c.fetchone()
+    conn.close()
+
+    if row:
+        font_folder = os.path.abspath(row[0])
+        return font_folder
+    else:
+        raise KeyError('font_path_folder not found in settings table')

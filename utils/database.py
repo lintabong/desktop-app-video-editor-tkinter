@@ -1,3 +1,4 @@
+
 import os
 import sqlite3
 
@@ -17,9 +18,9 @@ def init_config_db():
         )
     """)
 
-    # Insert default values if not present
     defaults = {
         'transcriber_model_path_folder': 'assets/faster-whisper-small',
+        'transcriber_wrapper_path_folder': 'assets',
         'ffmpeg_path_folder': 'assets/ffmpeg',
         'font_path_folder': 'assets/fonts',
     }
@@ -31,6 +32,25 @@ def init_config_db():
 
     conn.commit()
     conn.close()
+
+def get_value_from_settings_db(key, db_path='database/settings.db'):
+    conn = sqlite3.connect(db_path)
+    c = conn.cursor()
+    c.execute('SELECT value FROM settings WHERE key = ?', (key,))
+    row = c.fetchone()
+    conn.close()
+
+    if row:
+        path = os.path.abspath(row[0])
+        return path
+    else:
+        return (f'{key} not found in settings table')
+
+def get_transcriber_wrapper_path():
+    return get_value_from_settings_db('transcriber_wrapper_path_folder')
+
+def get_transcriber_model_path():
+    return get_value_from_settings_db('transcriber_model_path_folder')
 
 def get_ffmpeg_folder_from_db(db_path='database/settings.db'):
     conn = sqlite3.connect(db_path)
